@@ -1,4 +1,5 @@
 ﻿using ClientesApp.Domain.Entities;
+using ClientesApp.Infra.Data.Mappings;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,13 @@ namespace ClientesApp.Infra.Data.Contexts
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //Criando conexão com um banco de dados em memória
-            optionsBuilder.UseInMemoryDatabase("ClientesBD");
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BDClientes2;Integrated Security=True;");
         }
 
-        /// <summary>
-        /// Operações com cliente em memória
-        /// </summary>
-        public DbSet<Cliente> Clientes { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //adicionando as classes de mapeamento do projeto
+            modelBuilder.ApplyConfiguration(new ClienteMap());
+        }
     }
 }

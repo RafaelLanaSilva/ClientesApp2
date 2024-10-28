@@ -18,7 +18,7 @@ namespace ClientesApp.Infra.Data.Repositories
         {
             using (var dataContext = new DataContext())
             {
-                dataContext.Clientes.Add(cliente);
+                dataContext.Add(cliente);
                 dataContext.SaveChanges();
             }
         }
@@ -27,7 +27,7 @@ namespace ClientesApp.Infra.Data.Repositories
         {
             using (var dataContext = new DataContext())
             {
-                dataContext.Clientes.Update(cliente);
+                dataContext.Update(cliente);
                 dataContext.SaveChanges();
             }
         }
@@ -36,7 +36,8 @@ namespace ClientesApp.Infra.Data.Repositories
         {
             using (var dataContext = new DataContext())
             {
-                return dataContext.Clientes
+                return dataContext.Set<Cliente>()
+                    .Where(c => c.Ativo)
                     .OrderBy(c => c.Nome)
                     .ToList();
             }
@@ -46,26 +47,27 @@ namespace ClientesApp.Infra.Data.Repositories
         {
             using (var dataContext = new DataContext())
             {
-                return dataContext.Clientes
+                return dataContext.Set<Cliente>()
+                    .Where(c => c.Ativo)
                     .FirstOrDefault(c => c.Id == id);
             }
         }
 
-        public bool VerifyEmail(string email)
+        public bool VerifyEmail(string email, Guid clientId)
         {
             using (var dataContext = new DataContext())
             {
-                return dataContext.Clientes
-                    .Any(c => c.Email.Equals(email));
+                return dataContext.Set<Cliente>()
+                    .Any(c => c.Email.Equals(email) && c.Id != clientId);
             }
         }
 
-        public bool VerifyCpf(string cpf)
+        public bool VerifyCpf(string cpf, Guid clienteId)
         {
             using (var dataContext = new DataContext())
             {
-                return dataContext.Clientes
-                    .Any(c => c.Cpf.Equals(cpf));
+                return dataContext.Set<Cliente>()
+                    .Any(c => c.Cpf.Equals(cpf) && c.Id != clienteId);
             }
         }
     }
