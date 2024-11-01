@@ -26,9 +26,13 @@ namespace ClientesApp.API.Controllers
         [ProducesResponseType(typeof(ClienteResponseDto), 201)]
         public IActionResult Post([FromBody] ClienteRequestDto dto)
         {
+
             try
             {
                 var response = _clienteService.Incluir(dto);
+
+                Thread.Sleep(2000);
+
                 return StatusCode(201, response);
             }
             catch (ValidationException e)
@@ -61,6 +65,9 @@ namespace ClientesApp.API.Controllers
             try
             {
                 var response = _clienteService.Alterar(id, dto);
+
+                Thread.Sleep(2000);
+
                 return StatusCode(200, response);
             }
             catch (ValidationException e)
@@ -93,6 +100,9 @@ namespace ClientesApp.API.Controllers
             try
             {
                 var response = _clienteService.Excluir(id);
+
+                Thread.Sleep(2000);
+
                 return StatusCode(200, response);
             }
             catch (ApplicationException e)
@@ -115,6 +125,8 @@ namespace ClientesApp.API.Controllers
             try
             {
                 var response = _clienteService.Consultar();
+
+                Thread.Sleep(2000); //deixando lento 3seg para ver o carregamento (não usa em produção)
 
                 if (response.Any())
                     return StatusCode(200, response);
